@@ -14,6 +14,7 @@ public class Role extends BaseEntity implements Serializable {
 
     private Long id;
     private String name;
+    private String functionIds;
 
     public Role(String name) {
         this.name = name;
@@ -34,4 +35,12 @@ public class Role extends BaseEntity implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+	public String getFunctionIds() {
+		return functionIds;
+	}
+
+	public void setFunctionIds(String functionIds) {
+		this.functionIds = functionIds;
+	}
 }

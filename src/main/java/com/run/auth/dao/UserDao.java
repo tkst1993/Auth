@@ -3,6 +3,7 @@ package com.run.auth.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
@@ -64,7 +65,7 @@ public class UserDao extends BaseDao{
 		}
 	}
 	
-	public List<User> findByIds(List<Long> ids){
+	public Collection<User> findByIds(Collection<Long> ids){
 		StringBuilder sqlStr = new StringBuilder("select * from auth_user where id in (");
 		for(Long id : ids){
 			sqlStr.append(id+",");
@@ -78,6 +79,24 @@ public class UserDao extends BaseDao{
 			e.printStackTrace();
 			return null;
 		}
+	}
+	/**
+	 * 分页查询
+	 * @param page
+	 * @param size
+	 * @return
+	 */
+	public Collection<User> findPage(int page,int size)
+	{
+		if(page < 1){
+			page = 1;
+		}
+		if(size <0){
+			size = 20;
+		}
+		String sql = "select * from auth_user limit ?,?";
+		int skip = (page - 1)*size;
+		return jdbcTemplate.query(sql, new Object[]{skip,size},new UserMapper());
 	}
 	/*public static void main(String[] args) {
 		List<Long>ids = new ArrayList<Long>();

@@ -7,16 +7,16 @@ import java.io.Serializable;
 /**
  * Created by dello on 2016/7/27.
  */
-public class RoleFunctions extends BaseEntity implements Serializable {
+public class RoleFunction extends BaseEntity implements Serializable {
     private Long Id;
     private Long roleId;
     private Long functionId;
     private int status;
 
-    public RoleFunctions() {
+    public RoleFunction() {
     }
 
-    public RoleFunctions(Long id, Long roleId, Long functionId, int status) {
+    public RoleFunction(Long id, Long roleId, Long functionId, int status) {
         Id = id;
         this.roleId = roleId;
         this.functionId = functionId;
