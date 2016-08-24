@@ -10,10 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import com.run.auth.common.BaseDao;
 import com.run.auth.entity.UserRole;
-
+@Repository
 public class UserRoleDao extends BaseDao {
 	private Logger logger= LoggerFactory.getLogger(UserRoleDao.class);
 

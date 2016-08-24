@@ -7,10 +7,11 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import com.run.auth.common.BaseDao;
 import com.run.auth.entity.User;
-
+@Repository
 public class UserDao extends BaseDao{
 	
 	private class UserMapper implements RowMapper<User>{

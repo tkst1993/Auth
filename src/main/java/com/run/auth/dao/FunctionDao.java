@@ -17,7 +17,7 @@ import java.util.List;
 
 import com.run.auth.common.BaseDao;
 import com.run.auth.entity.Functions;
-
+@Repository
 public class FunctionDao extends BaseDao {
 	
 	private Logger logger= LoggerFactory.getLogger(FunctionDao.class);

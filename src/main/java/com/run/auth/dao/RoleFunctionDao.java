@@ -8,10 +8,11 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import com.run.auth.common.BaseDao;
 import com.run.auth.entity.RoleFunction;
-
+@Repository
 public class RoleFunctionDao extends BaseDao {
 	
 	private class RoleFunctionMapper implements RowMapper<RoleFunction>{

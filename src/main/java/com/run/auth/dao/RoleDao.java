@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.Collection;
 import java.util.List;
-
+@Repository
 public class RoleDao extends BaseDao{
 	
 	private Logger logger= LoggerFactory.getLogger(RoleDao.class);
