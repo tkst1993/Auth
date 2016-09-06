@@ -27,7 +27,6 @@ import com.run.auth.entity.User;
 import com.run.auth.entity.UserRole;
 import com.run.auth.service.RoleService;
 import com.run.auth.service.UserService;
-import com.sun.org.apache.xalan.internal.utils.Objects;
 
 @Controller
 public class LoginController {
@@ -42,14 +41,14 @@ public class LoginController {
 	@ResponseBody
 	public String index(){
 		if(null != UserContext.getCurrent() && null !=UserContext.getCurrent().getUser()){
-			return "/layout/main";
+			return "detail";
 		}
-		return "/security/login";
+		return "login";
 	}
 	
-	@RequestMapping("/login")
+	@RequestMapping("/login_t")
 	public String login(Model model , String name , String pwd){
-		//TODO 非空检验
+		//非空检验
 		User user = userService.getUser(name, pwd);
 		if(null == user){
 			return "/security/login";
@@ -57,13 +56,13 @@ public class LoginController {
 		try{
 			//LoginUserCache.put(user, 30*60);
 			
-			if(Objects.equals("admin", user.getName())){
+			if("admin".equals( user.getName() )){
 				//左侧显示的内容
 				model.addAttribute("accordins",getAccordion(true,null));
 			}else{
 				List<UserRole> userRoles = userService.getUserRolesByUserId(user.getId());
 				if(null == userRoles || userRoles.size() == 0){
-					return "/security/login";
+					return "login";
 				}
 				List<Long> roleIds = new ArrayList<Long>();
 				for(UserRole userRole : userRoles){
@@ -77,12 +76,12 @@ public class LoginController {
 				model.addAttribute("accordins",accordions);
 				LoginUserCache.setAccorions(user.getName(), accordions);
 			}
-			return "/layout/main";
+			return "detail";
 			
 		}catch(Exception e){
 			e.printStackTrace();
 			LoginUserCache.remove(user.getName());
-			return "/security/login";
+			return "login";
 		}
 	}
 	
@@ -105,7 +104,7 @@ public class LoginController {
 				List<RoleFunction>roleFunction = roleService.getRoleFunctions(role.getId());
 				for(RoleFunction rf : roleFunction){
 					Functions func = nativeCache.getFunction(rf.getFunctionId());
-					if(Objects.equals(func.getAccordion(), Whether.YES.getValue())){
+					if(Whether.YES.getValue() ==func.getAccordion() ){
 						rootFunctionIdSet.add(func.getId());
 					}else{
 						permissionUrls.add(func.getUrl());
@@ -151,7 +150,7 @@ public class LoginController {
 	private void completeAccordion(List<Accordion> permissionAccordionSet,
 			Accordion rootAccordion) {
 		for(Accordion accordion : permissionAccordionSet){
-			if(Objects.equals(accordion.getParentId(), rootAccordion.getId())){
+			if(accordion.getParentId() == rootAccordion.getId()){
 				rootAccordion.getChildren().add(accordion);
 			}
 		}

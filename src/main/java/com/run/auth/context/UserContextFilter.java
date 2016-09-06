@@ -1,23 +1,16 @@
 package com.run.auth.context;
 
-import java.io.IOException;
-import java.util.List;
+import com.run.auth.dto.Accordion;
+import com.run.auth.entity.User;
+import sun.misc.BASE64Decoder;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import sun.misc.BASE64Decoder;
-
-import com.run.auth.dto.Accordion;
-import com.run.auth.entity.User;
-import com.sun.org.apache.xalan.internal.utils.Objects;
+import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
 
 public class UserContextFilter implements Filter {
 
@@ -40,7 +33,7 @@ public class UserContextFilter implements Filter {
 			return;
 		}
 		
-		if(request.getRequestURI().contains("index.jsp")){
+		if(request.getRequestURI().contains("index.html")){
 			chain.doFilter(servletRequest, servletResponse);
 			return;
 		}

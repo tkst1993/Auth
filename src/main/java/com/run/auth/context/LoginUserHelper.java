@@ -21,7 +21,6 @@ import com.run.auth.entity.User;
 import com.run.auth.entity.UserRole;
 import com.run.auth.service.RoleService;
 import com.run.auth.service.UserService;
-import com.sun.org.apache.xalan.internal.utils.Objects;
 
 @Component
 public class LoginUserHelper {
@@ -59,7 +58,7 @@ public class LoginUserHelper {
 				List<RoleFunction>roleFunction = roleService.getRoleFunctions(role.getId());
 				for(RoleFunction rf : roleFunction){
 					Functions func = nativeCache.getFunction(rf.getFunctionId());
-					if(Objects.equals(func.getAccordion(), Whether.YES.getValue())){
+					if(func.getAccordion() == Whether.YES.getValue()){
 						rootFunctionIdSet.add(func.getId());
 					}else{
 						permissionUrls.add(func.getUrl());
@@ -105,7 +104,7 @@ public class LoginUserHelper {
 	private void completeAccordion(List<Accordion> permissionAccordionSet,
 			Accordion rootAccordion) {
 		for(Accordion accordion : permissionAccordionSet){
-			if(Objects.equals(accordion.getParentId(), rootAccordion.getId())){
+			if(accordion.getParentId() == rootAccordion.getId()){
 				rootAccordion.getChildren().add(accordion);
 			}
 		}

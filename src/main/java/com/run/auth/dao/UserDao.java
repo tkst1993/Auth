@@ -68,9 +68,10 @@ public class UserDao extends BaseDao{
 	
 	public Collection<User> findByIds(Collection<Long> ids){
 		StringBuilder sqlStr = new StringBuilder("select * from auth_user where id in (");
-		for(Long id : ids){
+		/*for(Long id : ids){
 			sqlStr.append(id+",");
-		}
+		}*/
+		ids.forEach((id) -> sqlStr.append(id).append(","));
 		sqlStr.append(")");
 		String sql = sqlStr.deleteCharAt(sqlStr.length()-2).toString();
 		System.out.println(sql);

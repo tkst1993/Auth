@@ -1,0 +1,257 @@
+<div class="bg-light lter b-b wrapper-sm" id="model">
+	<h3 class="m-n font-thin h4">人员管理</h3>
+</div>
+<div class="panel panel-default" ng-controller="personManage" style="margin:10px;padding:0px;">
+		<div class="panel-body" style="margin:0px;margin-top:-10px;">
+			<div class="app-row" style="margin-top:-5px">
+				<div class="col-sm-3" style="margin-left:-30px;">
+					<div class="div-label" style="margin-left:0px;">
+						<label>手机号:</label>
+					</div>
+					<div class="div-input">
+						<input type="text" class="app-form-control" placeholder="输入手机号"
+							id="qryPhoneNum" />
+					</div>
+				</div>
+				
+				<div class="col-sm-3">
+					<div class="div-label">
+						<label>归属地:</label>
+					</div>
+					<div class="div-input">
+						<select id="province">
+
+						</select>
+					</div>
+				</div>
+				<div   class="col-sm-2"  style="position:relative;left:-95px;">
+					<div class="div-input" id="scity">
+						<select id="city">
+						    
+						</select>
+					</div>
+				</div>
+				
+				<div class="col-sm-3">
+					<div style="position:relative;display:inline-block;width:70px;right:-5px;">
+						<label>人员类别:</label>
+					</div>
+					<div style="position:relative;display:inline-block;width:25px;right:-5px;">
+						<select id="qryStatus">
+							<option value="0" selected="selected">选择类别</option>
+							<option value="1">涉疆</option>
+							<option value="2">涉藏</option>
+							<option value="3">涉外</option>
+						</select>
+					</div>
+
+				</div>
+
+
+			</div>
+
+			<div class="app-row">
+				<div class="col-sm-3" style="margin-left:-30px;">
+					<div class="div-label">
+						<label>IMEI:</label>
+					</div>
+					<div class="div-input">
+						<input type="text" class="app-form-control" placeholder="输入IMEI"
+							id="qryImei"/>
+					</div>
+				</div>
+
+				<div class="col-sm-3">
+					<div class="div-label">
+						<label>IMSI:</label>
+					</div>
+					<div class="div-input">
+						<input type="text" class="app-form-control" placeholder="输入IMSI"
+							id="qryImsi" />
+					</div>
+				</div>
+				
+				<div class="col-sm-6">
+					<div style="position:relative;display:inline-block;width:70px;right:0px;">
+						<label>查询时段:</label>
+					</div>
+					<div style="position:relative;display:inline-block;width:150px;right:0px;">
+						<input type="text" id="qryTimeFrom"
+							class="laydate-icon app-form-control" placeholder="开始时间" />
+					</div>
+					--			
+					
+					<div style="padding:0;position:relative;display:inline-block;width:150px;right:0px;">
+						<input type="text" id="qryTimeTo"
+							class="laydate-icon app-form-control" placeholder="结束时间" />
+					</div>
+				</div>
+				
+			</div>
+			<!-- <div class="app-row"></div> -->
+			<div class="app-row">
+					<div class="col-sm-4">
+					</div>
+					<div class="col-sm-5">
+						<button class="btn btn-info btn-addon xw100" ng-click="qryPersonList()">
+								<i class="fa fa-search"></i>查询
+						</button>
+						
+						<!-- <button class="btn btn-info btn-addon xw100" ng-click="checkDetail()">
+								<i class="fa fa-search"></i>查看明细
+						</button>	 -->			
+					
+	
+						<button class="btn btn-danger btn-addon xw100 "
+							ng-click="addPerson ()">
+							<i class="fa fa-plus"></i>新建
+						</button>
+	
+						<button class="btn btn-primary btn-addon xw100 "
+							ng-click="DelPerson()">
+							<i class="fa fa-trash-o"></i>批量删除
+						</button>
+					</div>
+					<div class="col-sm-3">
+						<div class="div-label">
+							<label>排序:</label>
+						</div>
+						<div class="btn-group" data-toggle="buttons" id="sortSperson">
+							<label class="btn btn-default active" name="sorder">
+								<input type="radio" id="shejiang" autocomplete="off" checked>涉疆
+							</label>
+							<label class="btn btn-default" name="sorder">
+								<input type="radio" id="shezang" autocomplete="off">涉藏
+							</label>
+							<label class="btn btn-default" name="sorder">
+								<input type="radio" id="shewai" autocomplete="off">涉外
+							</label>
+						</div>
+					</div>
+				
+			</div>
+		</div>
+	</div>
+
+	<div class="panel panel-default" style="margin:10px;padding:0px">
+		
+		<div class="table-responsive">
+			<table id="tbl" class="table  m-b-none hover text-center">
+				<thead>
+					<tr>
+						<th class="text-center" style="width: 5%"><label
+							class="i-checks m-b-none"> <input type="checkbox"
+								id="chkAll" /> <i> </i>
+						</label></th>
+						<!--  <th class="text-center" style="width:5%">序号</th> -->
+						<th class="text-center" style="width: 13%">手机号</th>
+						<th class="text-center" style="width: 10%">号码归属地</th>
+						<th class="text-center" style="width: 10%">IMEI</th>
+						<th class="text-center" style="width: 10%">IMSI</th>
+						<th class="text-center" style="width: 10%">人员类别</th> 
+						<th class="text-center" style="width: 12%">活跃度</th>
+						<th class="text-center" style="width: 12%">威胁级别</th>
+						<th class="text-center" style="width: 8%">操作</th>
+						<th class="text-center" style="width: 15%">查看明细</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<div class="grid-table-btns">
+			<button class="btn btn-success btn-addon xw120" id="exportPerson">
+				<i class="fa fa-download"></i>导出
+			</button>
+		</div>
+	</div>
+
+
+
+
+
+
+	<div id="createModelDailog" class="dn dialog-div" style="padding:0px;margin:10px;">
+	
+		<div style="position:relative;left:30px;">
+			<div style="position:relative;right:72px;buttom:72px;margin-right:10px; margin-left: 10px;clear: both; padding: 5px;">
+			
+				<div class="dialog-label">
+					<label>手机号:</label>
+				</div>				
+				<div class="dialog-input" >
+						<!-- <input type="hidden" name="SId" id="sid" />  -->
+						<input	type="text" class="app-form-control " placeholder="输入手机号 "
+							name="modelname" id="phoneNum"/>
+				</div>			
+			</div>
+		
+			<div class="dialog-row" style="position:relative;right:72px;buttom:72px">			
+					<div class="dialog-label">
+						<label>IMEI:</label>
+					</div>
+					<div class="dialog-input">
+						<input type="text" class="app-form-control " placeholder="输入imei"
+							name="remark" id="imei" />
+					</div>			
+			</div>
+			
+			<div class="dialog-row" style="position:relative;right:72px;buttom:72px">			
+					<div class="dialog-label">
+						<label>IMSI:</label>
+					</div>
+					<div class="dialog-input">
+						<input type="text" class="app-form-control " placeholder="输入imsi"
+							name="remark" id="imsi" />
+					</div>			
+			</div>
+			
+			<div class="dialog-row" style="position:relative;right:72px;buttom:72px">			
+					<div class="dialog-label">
+						<label>人群类别:</label>
+					</div>
+					<div class="dialog-input" data-toggle="buttons" id="stype">
+						<label class="btn btn-default active" name="ntype">
+							<input type="checkbox" autocomplete="off" value="1">涉疆
+						</label>
+						<label class="btn btn-default"  name="ntype">
+							<input type="checkbox" autocomplete="off" value="3">涉藏
+						</label>
+						<label class="btn btn-default"  name="ntype">
+							<input type="checkbox" autocomplete="off" value="5">涉外
+						</label>
+						
+					</div>		
+			</div>
+		
+		</div>
+		
+		
+		<div class="dialog-table-btns">
+			<button class="btn btn-danger w-xs " id="saveDialog">保存</button>
+			<button class="btn btn-success w-xs " id="closeDialog">关闭</button>
+		</div>
+	</div>
+	
+	
+		<!--人员通联信息弹出框  -->
+	<div id="detailDailog" class="dn dialog-div" style="margin:10px;padding:0px;">
+		<tabset> 
+		<tab heading="信令通联" id="signal">
+		<div id="signalTableDiv">
+				 
+		</div>
+		</tab> 
+		<tab heading="网络通联" id="netWork">
+		<div id="netWorkTableDiv">
+				 
+		</div>
+		</tab> 
+		</tabset>		 
+	
+	</div>
+
+
+
+
+

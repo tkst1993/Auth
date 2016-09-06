@@ -1,0 +1,126 @@
+<div class="panel panel-default">
+	<div class="bg-light lter b-b wrapper-sm" id="model">
+		<h3 class="m-n font-thin h4">人员轨迹分析</h3>
+	</div>
+	<div class="wrapper-md" ng-controller="personTrackController" style="margin:-10px;">
+		<div class="panel panel-default">
+			<!-- <div class="panel-heading">查询条件</div> -->
+			<div class="panel-body">
+				<div class="app-row">
+					<div class="col-sm-3">
+						<label>时间:</label>
+						<input type="text" id="startTime" class="laydate-icon app-form-control" 
+							   style="height:35px;width:60%;" placeholder="请输入查询时间" />
+					</div>	
+					<div class="col-sm-3" style="left:-60px;">
+						<div class="div-label" style="margin:0px;padding:0px;margin-top:10px;">
+							<label>身份类型:</label>
+						</div>
+						<div class="div-input">
+							<select  id="identity">
+								<option value="1">真实身份</option>
+								<option value="0">虚拟身份</option>
+							</select>
+						</div>
+					</div>	
+					<div class="col-sm-3" style="left:-60px;">
+						<!-- <label>账号类型:</label>
+						<select class="app-form-control" id="identityType" style="width: 60%"
+							ng-model="identityType"
+							ng-options="identityType.text for identityType in identityTypeModel"
+							ng-change="changeIdentityType()">
+						</select>  -->
+						<div class="div-label" style="margin:0px;padding:0px;margin-top:10px;">
+							<label>账号类型:</label>
+						</div>
+						<div class="div-input">
+							<select id="identityType">
+								<!-- <option value='0020001'>手机号</option> -->
+							</select>
+						</div>
+					</div>	
+					<div class="col-sm-3" style="left:-60px;">
+						<label>账号内容:</label>
+						<input type="text" id="typeNo" class="app-form-control" style="width: 50%; display: inline" />
+						<input type="hidden" id="identityTypeVal" name="identityTypeVal" />	
+						
+						<button class="btn btn-primary" ng-click="submitQurey()">查询</button>	
+					</div>		
+				</div>
+			</div>
+		</div>
+		<div class="panel panel-default" style="margin-top:-10px;">
+			<div class="panel-body">
+				<div class="app-row">
+					<div style="width:100%;height:35px;">
+						<iframe src="pages/personTrackAnalyse/timeCursor.html" scrolling="no"  frameborder="0" style="width:100%;height:100%;left: 0px;top:-20px" id="frame0" name="frame0"></iframe>
+		 			</div>
+		 		</div>
+			</div>
+		</div>
+		<div class="panel panel-default" style="margin-top:-10px;">
+			<div class="panel-heading">结果展示
+				<button class="btn btn-primary" ng-click="showPersonNum('1')" id="shejiangBtn" style="margin-left: 820px;">涉疆</button>
+				<button class="btn btn-primary" ng-click="showPersonNum('2')" id="shezangBtn" style="">涉藏</button>
+				<button class="btn btn-primary" ng-click="showPersonNum('3')" id="sehwaiBtn" style="">涉外</button>
+			</div>
+			<div class="panel-body" style="margin:0px;padding:0px;margin-top:-10px;">
+				<div style="width:100%;height:700px">
+					<iframe src="pages/personTrackAnalyse/gis.html" scrolling="no"  frameborder="0" style="width:100%;height:100%" id="frame1" name="frame1"></iframe>
+	 			</div>
+	 			<div id="datalist" style="position: absolute;width:300px;height:150px;left: 240px;bottom: 60px;">
+					<table style="border: solid 1px #000000;border-width: 1px 0px 0px 1px">
+						<tr height="30px">
+							<td style="width: 100px;text-align: center;border: solid 1px #000000;border-width: 0px 1px 1px 0px;">同行</td>
+							<td style="width: 100px;text-align: center;border: solid 1px #000000;border-width: 0px 1px 1px 0px;">接头</td>
+						</tr>
+						<tr height="50px">
+							<input type="hidden" name="type" id="type"/>
+							<input type="hidden" name="txnumres" id="txnumres"/>
+							<input type="hidden" name="jtnumres" id="jtnumres"/>
+							<td style="width: 100px;text-align: center;border: solid 1px #000000;border-width: 0px 1px 1px 0px;cursor:hand">
+								<span id="txnum" style="cursor:hand">0</span>
+							</td>
+							<td style="width: 100px;text-align: center;border: solid 1px #000000;border-width: 0px 1px 1px 0px;cursor:hand">
+								<span id="jtnum" style="cursor:hand">0</span>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 人员信息弹出框  -->
+	<div id=personInfoDailog class="dn dialog-div">
+		<div class="table-responsive">
+			<table id="personInfo" class="table  m-b-none hover text-center">
+				<thead>
+					<tr>
+						<th class="text-center" style="width: 20%">姓名</th>
+						<th class="text-center" style="width: 20%">电话</th>
+						<th class="text-center" style="width: 20%">IMSI</th>
+						<th class="text-center" style="width: 20%">IMEI</th>
+						<th class="text-center" style="width: 20%">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!--人员通联信息弹出框  -->
+	<div id="detailDailog" class="dn dialog-div">
+		<tabset> 
+			<tab heading="信令通联" id="signal">
+				<div class="table-responsive" id="signalTableDiv">
+				
+				</div>
+			</tab> 
+			<tab heading="网络通联" id="netWork">
+				<div class="table-responsive" id="netWorkTableDiv">
+						
+				</div>
+			</tab> 
+		</tabset>
+	</div>
+</div>

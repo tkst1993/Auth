@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<script type="text/javascript" src="../../js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../../js/gis/lib/run_map2.js"></script>
+<script type="text/javascript" src="../../js/gis/lib/OpenLayers.js"></script>
+<script type="text/javascript">
+	window.onload = function(){
+		initMap();
+	};
+	//显示人员轨迹
+	function showPersonTrack(startTime,numType,num,timenum,operType){//0查询，1时间轴拖动
+		//alert("operType:"+operType);
+		var personType = document.getElementById("personType").value;
+		if(personType==""||personType==undefined){
+			personType = "0";
+		}
+		var k=0;
+		if("0"==operType){
+			k=0;
+			var fl = setInterval(function(){
+				k++;
+				if(k<=parseInt(timenum)){
+					loadPersonTrackData(startTime,numType,num,k,personType);
+				}
+			},300); 
+		}else{
+			k=parseInt(timenum);
+			loadPersonTrackData(startTime,numType,num,timenum,personType);
+		}
+		
+		var flag = false;
+		var showFlag = setInterval(function(){
+			if(k>=parseInt(timenum)){
+				if("0"==operType){//查询时，清楚定时播放
+					clearInterval(fl);
+				}
+				//alert(k);
+				//接头点
+				showJtPoint(numType,num,startTime,timenum,personType);
+				//setTimeout('showStopPoint()', 1000);//延时一秒加载停留点
+				showStopPoint(numType,num,startTime,timenum);
+				if(personType=="1"||personType=="2"||personType=="3"){
+					showPersonNum(startTime,numType,num,timenum,personType);
+				}
+				flag = true;
+			}
+		}, 500);
+		setInterval(function(){
+			if(flag){
+				clearInterval(showFlag);
+			}
+		}, 50);
+	}
+	
+	//加载轨迹数据
+	function loadPersonTrackData(startTime,numType,num,timenum,personType){
+		$.ajax({
+			type: 'post',
+			url: '/specialPopulations/personTrack/getPersonTrack',
+			dataType: 'json',
+			data: {
+				numType: numType,
+				num: num,
+				time: startTime,
+				timenum:timenum,
+				personType:personType
+			},
+			success: function(data) {
+				//清除轨迹
+				clear_spec_line();
+				clear_spec_marker(0);
+				var obj = data;
+				var objres = obj.result;
+				//绘制轨迹
+				if(objres.pnts){
+					line_spec(objres,0);//0轨迹，1同行
+				}
+				//绘制同行
+				//alert(objres.txPnts);
+				if(objres.txPnts){
+					line_spec(objres,1);//0轨迹，1同行
+				}
+			}
+		});
+	}
+	//显示接头点
+	function showJtPoint(numType,num,startTime,timenum,personType){
+		$.ajax({
+			type: 'post',
+			url: '/specialPopulations/personTrack/getPersonTrack',
+			dataType: 'json',
+			data: {
+				numType: numType,
+				num: num,
+				time: startTime,
+				timenum:timenum,
+				personType:personType
+			},
+			success: function(data) {
+				
+				var obj = data;
+				var objres = obj.result;
+				//绘制接头
+				//alert(objres.jtPoints);
+				if(objres.jtPoints){
+					//清除接头 
+					clear_spec_marker(1);
+					point_jt(objres.jtPoints);
+				} 
+			}
+		});
+	}
+	//显示停留点
+	function showStopPoint(numType,num,startTime,timenum){
+		//加载停留点数据
+		$.ajax({
+			type: 'post',
+			url: '/specialPopulations/personTrack/getPersonStopPoint',
+			dataType: 'json',
+			data: {
+				numType: numType,
+				num: num,
+				time: startTime,
+				timenum: timenum
+			},
+			success: function(data) {
+				clear_spec_marker(2);
+				//alert("11");
+				//layer.close(loadDom);
+				//var obj = eval("("+data+")");
+				var obj = data;
+				var objres = obj.result;
+				var len = objres.length;
+				var result;
+				if(len==0)
+				{
+					return;
+				}
+				for(var j = 0;j<len;j++)//过滤停留点重合的情况
+				{
+					result=objres[j];
+					var markeType = result.type;//0正常的停留点，1第一个，2最后一个，3只有一个
+					var lon  = result.lon;
+					var lon  = result.lon;
+					var lat  = result.lat;
+					var attr = result.attr;
+					var att = {};
+					for(var i = 0;i<attr.length;i+=2){
+						var start="停留开始"+(i/2+1);
+						var end="停留结束"+(i/2+1);
+						att[start] = attr[i];
+						att[end] = attr[i+1];
+					}
+					var opac = 0.5;//透明度
+					var type = 0;//0停留点
+					addMarke_spec(lon,lat,att,type,opac,markeType);
+				}
+			}
+		}); 
+	}
+	
+	//获取同类型人员的同行和接头统计信息
+	function showPersonNum(startTime,numType,num,timenum,personType){
+		//显示同行接头图形
+		$.ajax({
+			type: 'post',
+			url: '/specialPopulations/personTrack/getPersonTrack',
+			dataType: 'json',
+			data: {
+				numType: numType,
+				num: num,
+				time: startTime,
+				timenum:timenum,
+				personType:personType
+			},
+			success: function(data) {
+				//绘制停留点
+				showStopPoint(numType,num,startTime,timenum);
+				//layer.close(loadDom);
+				//var obj = eval("("+data+")");
+				var obj = data;
+				var objres = obj.result;
+				//清除轨迹线
+				//clear_spec_line();
+				//绘制轨迹
+				if(objres.pnts){
+					clear_spec_line();
+					clear_spec_marker(0);
+					line_spec(objres,0);//0轨迹，1同行
+				}
+				//绘制同行
+				//alert(objres.txPnts);
+				if(objres.txPnts){
+					line_spec(objres,1);//0轨迹，1同行
+				}
+				//绘制接头
+				//alert(objres.jtPoints);
+				if(objres.jtPoints){
+					clear_spec_marker(1);
+					point_jt(objres.jtPoints);
+				} 
+				
+			}
+		});
+		//personType:1涉疆；2涉藏；3涉外
+		$.ajax({
+			type: 'post',
+			url: '/specialPopulations/personTrack/getPersonNum',
+			dataType: 'json',
+			data: {
+				numType: numType,
+				num: num,
+				time: startTime,
+				timenum:timenum,
+				personType:personType
+			},
+			success: function(data) {
+				//layer.close(loadDom);
+				//var obj = eval("("+data+")");
+				var obj = data;
+				var objres = obj.result;
+				var txnum = objres.txnum;
+				var jtnum = objres.jtnum;
+				//alert(txnum+":"+jtnum);
+				window.parent.document.getElementById("txnum").innerHTML='<span id="txnum" style="cursor:hand" >'+txnum+'</span>';
+				window.parent.document.getElementById("jtnum").innerHTML='<span id="jtnum" style="cursor:hand" >'+jtnum+'</span>';
+				window.parent.document.getElementById("txnumres").value=txnum;
+				window.parent.document.getElementById("jtnumres").value=jtnum;
+				document.getElementById("personType").value=personType;
+			}
+		});
+	}
+</script>
+</head>
+<body>
+	<input type="hidden" name="personType" id="personType"/>
+	<div id="mymap" style="position: absolute;width:100%;height:100%;left: 0px;"></div>
+</body>
+</html>

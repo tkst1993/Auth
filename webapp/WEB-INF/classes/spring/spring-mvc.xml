@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+       xmlns:context="http://www.springframework.org/schema/context"  
+       xmlns:mvc="http://www.springframework.org/schema/mvc"  
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd    
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd  
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">  
+   <!--开启springmvc注解模式-->
+    <!--
+        1、自动注册DefaultAnnotationMapping、AnnotationHandlerAdapter
+        2、提供一系列：数据绑定，数字和日期的farmat @NumberFormat @DateTimeFormat
+        3、xml、json默认读写支持
+    -->
+   <mvc:annotation-driven />  
+    
+   <!--扫描web相关的bean-->
+   <context:component-scan base-package="com.run.auth.controller"/>  
+   
+   <!--servlet-mapping 映射路径：/-->
+    <!--静态资源默认servlet配置
+    1、加入对静态的处理
+    2、允许使用/做整体映射
+    -->
+    <mvc:default-servlet-handler/>
+      
+    <!--配置jsp显示ViewResolver-->   
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">    
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>    
+        <property name="prefix" value="/"/>    
+        <property name="suffix" value=".html"/>    
+    </bean>  
+</beans>

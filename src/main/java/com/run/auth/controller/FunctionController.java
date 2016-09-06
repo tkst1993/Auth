@@ -13,7 +13,6 @@ import com.run.auth.common.tree.Tree;
 import com.run.auth.context.NativeCache;
 import com.run.auth.entity.Functions;
 import com.run.auth.service.FunctionService;
-import com.sun.org.apache.xalan.internal.utils.Objects;
 
 @Controller
 @RequestMapping("/function")
@@ -80,7 +79,7 @@ public class FunctionController {
 	@RequestMapping("/getSubFunctions")
 	@ResponseBody
 	public List<Functions> getSubFunctions(int page,int size,Long parentId){
-		if(Objects.equals(null, parentId)){
+		if(null == parentId){
 			parentId = 0L;
 		}
 		return functionService.getFunctions(page, size, parentId);
