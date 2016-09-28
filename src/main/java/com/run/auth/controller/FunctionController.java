@@ -55,6 +55,7 @@ public class FunctionController {
 	@RequestMapping("/getAllFunctions")
 	@ResponseBody
 	public void getAllFunctions(){
+
 		functionService.getAllFunctions();
 	}
 	

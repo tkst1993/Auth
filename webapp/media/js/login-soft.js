@@ -47,9 +47,9 @@ var Login = function () {
 	                error.addClass('help-small no-left-padding').insertAfter(element.closest('.input-icon'));
 	            },
 
-	            submitHandler: function (form) {
+	           /* submitHandler: function (form) {
 	                window.location.href = "index.html";
-	            }
+	            }*/
 	        });
 
 	        $('.login-form input').keypress(function (e) {

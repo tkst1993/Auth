@@ -18,6 +18,7 @@ import com.run.auth.entity.User;
 import com.run.auth.entity.UserRole;
 import com.run.auth.service.RoleService;
 import com.run.auth.service.UserService;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @RequestMapping("/authorize")
@@ -29,8 +30,9 @@ public class UserAuthorizeController {
 	@Autowired private RoleService roleService;
 	
 	@RequestMapping("/index")
-	public String index(){
-		return "/security/authorize/zuthorize_list";
+	@ResponseBody
+	public void index(){
+		//return "/security/authorize/zuthorize_list";
 	}
 	
 	@RequestMapping("/userRole")

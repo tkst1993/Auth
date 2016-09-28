@@ -22,8 +22,9 @@ public class RoleController {
 	private RoleService roleService;
 	
 	@RequestMapping("/index")
-	public String index(){
-		return "security/role/role_list";
+	@ResponseBody
+	public void index(){
+		//return "security/role/role_list";
 	}
 	
 	@RequestMapping(value = "/getRoles",method = RequestMethod.POST)

@@ -34,7 +34,15 @@ public class UserDao extends BaseDao{
 	public User getUser(String name , String pwd){
 		String sql = "select * from auth_user where name = ? and pwd = ?";
 		try{
-			return jdbcTemplate.queryForObject(sql, new Object[]{name,pwd},new UserMapper());
+			//return jdbcTemplate.queryForObject(sql, new Object[]{name,pwd},new UserMapper());
+			List<User> userList = jdbcTemplate.query(sql, new Object[]{name,pwd} , new UserMapper());
+			if(userList.isEmpty()){
+				return null;
+			}else if(userList.size() == 1){
+				return userList.get(0);
+			}else{
+				return userList.get(0);
+			}
 		}catch(Exception e){
 			e.printStackTrace();
 			return null;
@@ -68,10 +76,10 @@ public class UserDao extends BaseDao{
 	
 	public Collection<User> findByIds(Collection<Long> ids){
 		StringBuilder sqlStr = new StringBuilder("select * from auth_user where id in (");
-		/*for(Long id : ids){
+		for(Long id : ids){
 			sqlStr.append(id+",");
-		}*/
-		ids.forEach((id) -> sqlStr.append(id).append(","));
+		}
+		//ids.forEach((id) -> sqlStr.append(id).append(","));
 		sqlStr.append(")");
 		String sql = sqlStr.deleteCharAt(sqlStr.length()-2).toString();
 		System.out.println(sql);

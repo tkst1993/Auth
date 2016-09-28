@@ -88,10 +88,10 @@ public class RoleDao extends BaseDao{
      */
     public List<Role> findRoleByIds(Collection<Long> ids){
         StringBuilder sb=new StringBuilder("select * from auth_role where id in (");
-        ids.forEach((id) -> sb.append(id).append(","));
-        /*for(Long id : ids){
+        //ids.forEach((id) -> sb.append(id).append(","));
+        for(Long id : ids){
         	sb.append(id).append(",");
-        }*/
+        }
         sb.deleteCharAt(sb.length()-1);
         sb.append(")");
         logger.info("findByIds sql"+sb);
